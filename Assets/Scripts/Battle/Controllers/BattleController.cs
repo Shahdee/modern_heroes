@@ -35,16 +35,40 @@ public class BattleController : IBattleController
 
 
     // QA 
-    // how to assign player to a team 
     // how to switch controll between real player and ai ? 
+    // what object stars battle ?
+    // when to subscribe to battle entities? 
 
-    private readonly List<IPlayer> _opponents;
+    private readonly ITeamStorage _teamStorage;
+
     private IPlayer _currentPlayer;
 
-    public BattleController(List<IPlayer> opponents)
+    public BattleController(ITeamStorage teamStorage)
     {
-        _opponents = opponents;
+        _teamStorage = teamStorage;
+
+
     }
 
+    public void StartBattle()
+    {
+       
+        SubscribeToTeams();
+        
+    }
 
+    private void FinishBattle()
+    {
+        UnSubscribeFromTeams();
+    }
+
+    private void SubscribeToTeams()
+    {
+         var teams = _teamStorage.AllTeams;
+    }
+
+    private void UnSubscribeFromTeams()
+    {
+
+    }
 }

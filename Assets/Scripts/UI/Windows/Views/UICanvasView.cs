@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IBattleController 
+public class UICanvasView : MonoBehaviour
 {
-    void StartBattle();
+    
 }

@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c93f8a8dc83454c568fc818fa6160300, type: 3}
   m_Name: TeamInstaller
   m_EditorClassIdentifier: 
+  _teamDatabase: {fileID: 11400000, guid: 15828a2adcadf4003b250b4459f88582, type: 2}

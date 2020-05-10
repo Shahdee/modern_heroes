@@ -8,6 +8,7 @@ namespace Game.Player
     {
         public override void InstallBindings()
         {
+            Container.BindInterfacesTo<PlayerFactory>().AsSingle();
         }
     }
 }

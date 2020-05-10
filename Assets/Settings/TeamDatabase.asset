@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0a5d43de60fb4afb84591f6b7ae3349, type: 3}
   m_Name: TeamDatabase
   m_EditorClassIdentifier: 
-  _teamData: []
+  _teamData:
+  - PlayerType: 0
+    Characters:
+    - CharacterType: 0
+      CharacterView: {fileID: 0}

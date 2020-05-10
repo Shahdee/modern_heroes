@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IBattleController 
+public enum EWindowType 
 {
-    void StartBattle();
+    Main,
+    Battle,
+    End
 }

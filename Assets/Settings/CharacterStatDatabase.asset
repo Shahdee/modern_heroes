@@ -10,6 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6095bf8a3c40940c5a56acda65c7774e, type: 3}
-  m_Name: CharacterStatDatabaseAsset
+  m_Name: CharacterStatDatabase
   m_EditorClassIdentifier: 
-  _characterStatData: []
+  _characterStatData:
+  - CharacterType: 0
+    HealthPoints: 0
+    DamagePoints: 0
+    MoveRange: 0
+    AttackRange: 0
+  - CharacterType: 1
+    HealthPoints: 0
+    DamagePoints: 0
+    MoveRange: 0
+    AttackRange: 0
+  - CharacterType: 2
+    HealthPoints: 0
+    DamagePoints: 0
+    MoveRange: 0
+    AttackRange: 0
+  - CharacterType: 3
+    HealthPoints: 0
+    DamagePoints: 0
+    MoveRange: 0
+    AttackRange: 0

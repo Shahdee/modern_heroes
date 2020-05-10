@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d332aa96834c4780b5a77a485ff639c, type: 3}
   m_Name: CharacterInstaller
   m_EditorClassIdentifier: 
+  _characterStatDatabase: {fileID: 11400000, guid: ef4c1b6d49c4f4bb6b645239a5eb6ac3,
+    type: 2}

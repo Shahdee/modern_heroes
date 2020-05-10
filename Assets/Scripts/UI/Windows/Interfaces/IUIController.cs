@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IBattleController 
+public interface IUIController 
 {
-    void StartBattle();
+    void OpenWindow(EWindowType windowType);
 }
