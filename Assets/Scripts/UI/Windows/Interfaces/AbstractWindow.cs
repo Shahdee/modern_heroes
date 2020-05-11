@@ -19,10 +19,13 @@ public abstract class AbstractWindow : IWindow
     public void Open()
     {
         _view.Open();
+        AfterOpen();
     }
 
     public void Close()
     {
         _view.Close();
     }
+
+    protected abstract void AfterOpen();
 }

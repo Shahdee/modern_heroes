@@ -5,14 +5,6 @@ using UnityEngine;
 
 public class CharacterFactory : ICharacterFactory
 {
-
-    // SO 
-        // Teams[] 
-            // Dicitonary<ECharacterType, View> 
-
-
-
-
     public CharacterFactory()
     {
 

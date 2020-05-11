@@ -19,6 +19,7 @@ public abstract class AbstractPlayer : IPlayer
 
     protected readonly ITeamController _teamController;  
     protected readonly EPlayerType _playerType;  
+    protected ETurnPhase _turnPhase;
 
     public AbstractPlayer(EPlayerType playerType, ITeamController teamController)
     {
@@ -27,13 +28,7 @@ public abstract class AbstractPlayer : IPlayer
         
     }
 
-    public void GiveControl()
-    {
+    public abstract void StartTurn();
 
-    }
-
-    public void ReleaseControll()
-    {
-        
-    }
+    public abstract void EndTurn();
 }

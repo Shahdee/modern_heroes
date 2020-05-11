@@ -10,7 +10,7 @@ public class TouchController : AbstractInputController
     private Vector2 _touchCurrPosition;
     private Touch _currentTouch;
 
-    protected override void UpdateInput(float deltaTime)
+    protected override void UpdateInput()
     {
         if (_touchInProgress && EventSystem.current.IsPointerOverGameObject())
         {

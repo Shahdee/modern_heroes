@@ -4,20 +4,31 @@ using UnityEngine;
 
 public class CharacterModel : ICharacterModel
 {
-    private readonly CharacterStatData _characterStatData;
+    public int Health => _currHealth;
+    public int Damage => _characterStatData.DamagePoints;
+    public ECharacterType CharacterType => _characterStatData.CharacterType;
 
-    // curr health 
-    // is alive 
-    // made a turn 
+    private readonly CharacterStatData _characterStatData;
+    private int _currHealth;
 
     public CharacterModel(CharacterStatData characterStatData)
     {
         _characterStatData = characterStatData;
     }
 
+    public void Reset()
+    {
+        _currHealth = _characterStatData.HealthPoints;
+    }
+
     public bool isAlive()
     {
-        return true;
+        return _currHealth > 0;
     }
-    
+
+    public void ReceiveDamage(int damage)
+    {
+        _currHealth -= damage;
+        _currHealth = Mathf.Max(0, _currHealth);
+    }
 }

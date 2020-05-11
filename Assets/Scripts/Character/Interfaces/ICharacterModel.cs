@@ -4,5 +4,11 @@ using UnityEngine;
 
 public interface ICharacterModel 
 {
+    int Health {get;}
+    int Damage {get;}
+    ECharacterType CharacterType {get;}
+
     bool isAlive();
+    void ReceiveDamage(int damage);
+    void Reset();
 }

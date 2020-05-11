@@ -12,8 +12,12 @@ public class MainWindow : AbstractWindow
     {
         _view = view;
         _battleController = battleController;
-
         _view.OnStart += StartGame;
+    }
+
+    protected override void AfterOpen()
+    {
+
     }
 
     private void StartGame()

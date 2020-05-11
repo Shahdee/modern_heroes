@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using System;
 
-public class GameController : IGameController, IInitializable
+public class GameController : IGameController, IInitializable, IDisposable
 {
+    public event Action<EGameState> OnGameStateChange;
+    public EGameState CurrentGameState => _currentGameState;
 
     private readonly ICharacterFactory _characterFactory;
     private readonly ICharacterStatDataProvider _characterStatDataProvider;
@@ -13,10 +16,14 @@ public class GameController : IGameController, IInitializable
     private readonly ICharacterModelFactory _characterModelFactory;
     private readonly ITeamFactory _teamFactory;
     private readonly ITeamStorage _teamStorage;
+    private readonly IUIController _uiController;
+    private readonly IBattleController _battleController;
+    private EGameState _currentGameState = EGameState.Lobby;
+    private bool _forceSetState = true;
 
     public GameController(ICharacterFactory characterFactory, ICharacterStatDataProvider characterStatDataProvider,
                         TeamDatabaseAsset teamDatabaseAsset, IPlayerFactory playerFactory, ICharacterModelFactory characterModelFactory, 
-                        ITeamFactory teamFactory, ITeamStorage teamStorage)
+                        ITeamFactory teamFactory, ITeamStorage teamStorage, IUIController uiController, IBattleController battleController)
     {
         _characterFactory = characterFactory;
         _characterStatDataProvider = characterStatDataProvider;
@@ -25,14 +32,53 @@ public class GameController : IGameController, IInitializable
         _characterModelFactory = characterModelFactory;
         _teamFactory = teamFactory;
         _teamStorage = teamStorage;
+
+        _uiController = uiController;
+        _battleController = battleController;
     }
 
     public void Initialize()
     {
+        _battleController.OnBattleEnd += BattleEnded;
+        _battleController.OnBattleStart += BattleStarted;
+
         SpawnEntities();
+        SetState(EGameState.Lobby);
     }
 
-    void SpawnEntities()
+    public void SetState(EGameState gameState)
+    {
+        if (_currentGameState != gameState || _forceSetState)
+        {
+            _forceSetState = false;
+
+            _currentGameState = gameState;
+
+            SwitchGame(_currentGameState);
+
+            OnGameStateChange?.Invoke(_currentGameState);
+        }
+    }
+
+    private void SwitchGame(EGameState gameState)
+    {
+        switch(gameState)
+        {
+            case EGameState.Lobby:
+                _uiController.OpenWindow(EWindowType.Main);                
+            break;
+
+            case EGameState.InBattle:
+                _uiController.OpenWindow(EWindowType.Battle);
+            break;
+
+            case EGameState.BattleEnd:
+                _uiController.OpenWindow(EWindowType.End);
+            break;
+        }   
+    }
+
+    private void SpawnEntities()
     {
         foreach (var opponent in _teamDatabaseAsset.TeamData)
         {
@@ -51,5 +97,21 @@ public class GameController : IGameController, IInitializable
 
             _teamStorage.Add(player, team);
         }
+    }
+
+    private void BattleStarted()
+    {
+        SetState(EGameState.InBattle);
+    }
+
+    private void BattleEnded()
+    {
+        SetState(EGameState.BattleEnd);
+    }
+
+    public void Dispose()
+    {
+        _battleController.OnBattleStart -= BattleStarted;
+        _battleController.OnBattleEnd -= BattleEnded;
     }
 }

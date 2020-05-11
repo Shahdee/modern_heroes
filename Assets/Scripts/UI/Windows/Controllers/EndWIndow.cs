@@ -6,9 +6,22 @@ public class EndWIndow : AbstractWindow
 {
     public override EWindowType WindowType => EWindowType.End;
     private readonly EndWindowView _view;
+    private readonly IBattleController _battleController;
 
-    public EndWIndow(EndWindowView view) : base(view)
+    public EndWIndow(EndWindowView view, IBattleController battleController) : base(view)
     {
         _view = view;
+        _battleController = battleController;
+        _view.OnRestart += StartGame;
+    }
+
+    protected override void AfterOpen()
+    {
+        
+    }
+
+    private void StartGame()
+    {
+        _battleController.StartBattle();
     }
 }

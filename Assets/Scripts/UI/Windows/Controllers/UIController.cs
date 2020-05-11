@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class UIController : IUIController, IInitializable
+public class UIController : IUIController
 {
     private readonly IWindowStorage _windowStorage;
 
@@ -13,14 +12,9 @@ public class UIController : IUIController, IInitializable
     {
         _windowStorage = windowStorage;
         _currWindows = new Stack<IWindow>();
-    }
 
-    public void Initialize()
-    {
-        foreach(var win in _windowStorage.AllWindows)
+         foreach(var win in _windowStorage.AllWindows)
             win.Value.Close();
-
-        OpenWindow(EWindowType.Main);
     }
 
     public void OpenWindow(EWindowType windowType)

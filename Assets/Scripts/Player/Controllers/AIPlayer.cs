@@ -8,4 +8,17 @@ public class AIPlayer : AbstractPlayer
     {
         
     }
+
+
+    public override void StartTurn()
+    {
+        
+    }
+
+    public override void EndTurn()
+    {
+
+    }
+
+    // update behaviour ? 
 }

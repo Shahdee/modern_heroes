@@ -9,7 +9,7 @@ public class MouseController : AbstractInputController
     private DateTime _quickTouchCurrTime;
     private Vector2 _touchCurrPosition;
 
-    protected override void UpdateInput(float deltaTime)
+    protected override void UpdateInput()
     {
         if (Input.GetMouseButtonDown(0))
         {

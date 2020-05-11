@@ -14,22 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterStatData:
   - CharacterType: 0
-    HealthPoints: 0
-    DamagePoints: 0
+    HealthPoints: 100
+    DamagePoints: 10
     MoveRange: 0
     AttackRange: 0
   - CharacterType: 1
-    HealthPoints: 0
-    DamagePoints: 0
+    HealthPoints: 50
+    DamagePoints: 10
     MoveRange: 0
     AttackRange: 0
   - CharacterType: 2
-    HealthPoints: 0
-    DamagePoints: 0
+    HealthPoints: 1000
+    DamagePoints: 2
     MoveRange: 0
     AttackRange: 0
   - CharacterType: 3
-    HealthPoints: 0
-    DamagePoints: 0
+    HealthPoints: 50
+    DamagePoints: 3
     MoveRange: 0
     AttackRange: 0

@@ -17,3 +17,7 @@ MonoBehaviour:
     Characters:
     - CharacterType: 0
       CharacterView: {fileID: 0}
+  - PlayerType: 0
+    Characters:
+    - CharacterType: 1
+      CharacterView: {fileID: 0}

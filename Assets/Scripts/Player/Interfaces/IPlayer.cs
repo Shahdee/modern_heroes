@@ -7,7 +7,7 @@ public interface IPlayer
 {
     // events 
     
-    void GiveControl();
+    void StartTurn();
 
-    void ReleaseControll();
+    void EndTurn();
 }

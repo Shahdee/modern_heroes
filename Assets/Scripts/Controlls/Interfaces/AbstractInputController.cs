@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.EventSystems;
+using Zenject;
 
-public abstract class AbstractInputController : IInputController, IUpdatable
+public abstract class AbstractInputController : IInputController, ITickable
 {
     public event Action<Vector2> OnQuickTouch;
     public bool Enabled => _enabled;
@@ -12,7 +13,7 @@ public abstract class AbstractInputController : IInputController, IUpdatable
     protected bool _enabled;
     protected bool _touchInProgress;
 
-    public void CustomUpdate(float delta)
+    public void Tick()
     {
         if (_touchInProgress && EventSystem.current.IsPointerOverGameObject())
         {
@@ -20,7 +21,7 @@ public abstract class AbstractInputController : IInputController, IUpdatable
             return;
         }
 
-        UpdateInput(delta);
+        UpdateInput();
     }
 
     public void SetEnabled(bool enabled)
@@ -28,7 +29,7 @@ public abstract class AbstractInputController : IInputController, IUpdatable
         _enabled = enabled;
     }
 
-    protected abstract void UpdateInput(float delta);
+    protected abstract void UpdateInput();
 
     protected void QuickTouch(Vector2 position)
     {
