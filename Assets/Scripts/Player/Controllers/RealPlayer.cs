@@ -112,7 +112,7 @@ public class RealPlayer : AbstractPlayer, IDisposable
         foreach(var tm in _teamStorage.AllTeams)
         {
             if (tm.Key == this)
-                return tm.Value.TestCharToAttack();
+                return tm.Value.TestCharToSelect();
         }
         return null;
     }

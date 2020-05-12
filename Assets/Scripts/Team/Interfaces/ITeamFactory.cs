@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ITeamFactory 
 {
-    ITeamController Create(List<ICharacter> characters);
+    ITeamController Create(TeamData teamData, List<ICharacter> characters);
 }

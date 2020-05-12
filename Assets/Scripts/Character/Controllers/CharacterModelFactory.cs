@@ -9,7 +9,7 @@ public class CharacterModelFactory : ICharacterModelFactory
 
     }
 
-    public ICharacterModel Create(CharacterStatData data)
+    public ICharacterModel Create(CharacterData data)
     {
         return new CharacterModel(data);
     }

@@ -11,9 +11,9 @@ public class Character : ICharacter
     public int Health => _model.Health;
     private readonly ICharacterModel _model;
 
-    GameObject _view;
+    CharacterView _view;
 
-    public Character(ICharacterModel model, GameObject view)
+    public Character(ICharacterModel model, CharacterView view)
     {
         _model = model;
         _view = view;
@@ -38,9 +38,9 @@ public class Character : ICharacter
 
     }
 
-    public void Move()
+    public void Move(Vector3 position)
     {
-        // todo 
+        _view.transform.position = position;
     }
 
     public bool isAlive()
@@ -50,6 +50,11 @@ public class Character : ICharacter
 
     public void Reset()
     {
+        // todo 
+        
+        // put character on initial position 
+        // reset view 
+
         _model.Reset();
     }
 }

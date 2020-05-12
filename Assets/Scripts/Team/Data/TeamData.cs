@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Tilemaps;
 
 [Serializable]
 public class TeamData 
 {
-    [Serializable]
-    public class CharacterOnSceneData
-    {
-        public ECharacterType CharacterType;
-        public GameObject CharacterView;
-    }
-
     public EPlayerType PlayerType;
-    public List<CharacterOnSceneData> Characters;
+    public List<ECharacterType> Characters;
+    public TileBase SpawnTile;
 }

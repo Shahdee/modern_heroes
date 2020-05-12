@@ -4,7 +4,7 @@ using Zenject;
 [CreateAssetMenu(fileName = "CharacterInstaller", menuName = "SO/Installers/CharacterInstaller")]
 public class CharacterInstaller : ScriptableObjectInstaller<CharacterInstaller>
 {
-    [SerializeField] private CharacterStatDatabaseAsset _characterStatDatabase;
+    [SerializeField] private CharacterDatabaseAsset _characterStatDatabase;
 
     public override void InstallBindings()
     {
@@ -14,6 +14,6 @@ public class CharacterInstaller : ScriptableObjectInstaller<CharacterInstaller>
         Container.BindInterfacesTo<CharacterFactory>().AsSingle();
         Container.BindInterfacesTo<CharacterModel>().AsSingle();
         Container.BindInterfacesTo<CharacterModelFactory>().AsSingle();
-        Container.BindInterfacesTo<CharacterStatDataProvider>().AsSingle();
+        Container.BindInterfacesTo<CharacterDataProvider>().AsSingle();
     }
 }

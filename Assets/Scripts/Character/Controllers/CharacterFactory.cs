@@ -7,11 +7,18 @@ public class CharacterFactory : ICharacterFactory
 {
     public CharacterFactory()
     {
-
+           
     }
 
-    public ICharacter Create(ICharacterModel model, GameObject view)
+    public ICharacter Create(ICharacterModel model)
     {
-        return new Character(model, view);
+        if (model.Prefab != null)
+        {
+            var obj = Object.Instantiate(model.Prefab, null);
+            var view = obj.GetComponent<CharacterView>();
+
+            return new Character(model, view);
+        }
+        return null;
     }
 }

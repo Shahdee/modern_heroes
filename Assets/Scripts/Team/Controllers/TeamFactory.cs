@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class TeamFactory : ITeamFactory
 {
-    public ITeamController Create(List<ICharacter> characters)
+    private readonly IMapController _mapController;
+
+    public TeamFactory(IMapController mapController)
     {
-        return new TeamController(characters);
+        _mapController = mapController;
+    }
+
+    public ITeamController Create(TeamData teamData, List<ICharacter> characters)
+    {
+        return new TeamController(teamData, characters, _mapController);
     }
 }

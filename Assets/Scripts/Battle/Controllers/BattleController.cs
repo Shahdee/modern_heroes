@@ -19,7 +19,7 @@ public class BattleController : IBattleController
     private IPlayer _currentPlayer;
     private int _currentOpponentIndex;
 
-    public BattleController(ITeamStorage teamStorage) 
+    public BattleController(ITeamStorage teamStorage) //, IMapController mapController) 
     {
         _teamStorage = teamStorage;
         _opponents = new List<IPlayer>();

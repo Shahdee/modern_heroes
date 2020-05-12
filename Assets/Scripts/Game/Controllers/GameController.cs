@@ -10,7 +10,7 @@ public class GameController : IGameController, IInitializable, IDisposable
     public EGameState CurrentGameState => _currentGameState;
 
     private readonly ICharacterFactory _characterFactory;
-    private readonly ICharacterStatDataProvider _characterStatDataProvider;
+    private readonly ICharacterDataProvider _characterDataProvider;
     private readonly TeamDatabaseAsset _teamDatabaseAsset;
     private readonly IPlayerFactory _playerFactory;
     private readonly ICharacterModelFactory _characterModelFactory;
@@ -21,12 +21,12 @@ public class GameController : IGameController, IInitializable, IDisposable
     private EGameState _currentGameState = EGameState.Lobby;
     private bool _forceSetState = true;
 
-    public GameController(ICharacterFactory characterFactory, ICharacterStatDataProvider characterStatDataProvider,
+    public GameController(ICharacterFactory characterFactory, ICharacterDataProvider characterStatDataProvider,
                         TeamDatabaseAsset teamDatabaseAsset, IPlayerFactory playerFactory, ICharacterModelFactory characterModelFactory, 
                         ITeamFactory teamFactory, ITeamStorage teamStorage, IUIController uiController, IBattleController battleController)
     {
         _characterFactory = characterFactory;
-        _characterStatDataProvider = characterStatDataProvider;
+        _characterDataProvider = characterStatDataProvider;
         _teamDatabaseAsset = teamDatabaseAsset;
         _playerFactory = playerFactory;
         _characterModelFactory = characterModelFactory;
@@ -84,15 +84,15 @@ public class GameController : IGameController, IInitializable, IDisposable
         {
             var squadMembers = new List<ICharacter>();
 
-            foreach(var member in opponent.Characters)
+            foreach(var charType in opponent.Characters)
             {
-                var data = _characterStatDataProvider.GetCharacterStatData(member.CharacterType);
+                var data = _characterDataProvider.GetCharacterData(charType);
                 var model = _characterModelFactory.Create(data);
-                var character = _characterFactory.Create(model, member.CharacterView);
+                var character = _characterFactory.Create(model);
                 squadMembers.Add(character);
             }
 
-            var team = _teamFactory.Create(squadMembers);
+            var team = _teamFactory.Create(opponent, squadMembers);
             var player = _playerFactory.Create(opponent.PlayerType, team);
 
             _teamStorage.Add(player, team);

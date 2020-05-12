@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ICharacterFactory 
 {
-    ICharacter Create(ICharacterModel model, GameObject view);
+    ICharacter Create(ICharacterModel model);
 }

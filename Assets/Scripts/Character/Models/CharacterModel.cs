@@ -5,20 +5,21 @@ using UnityEngine;
 public class CharacterModel : ICharacterModel
 {
     public int Health => _currHealth;
-    public int Damage => _characterStatData.DamagePoints;
-    public ECharacterType CharacterType => _characterStatData.CharacterType;
-
-    private readonly CharacterStatData _characterStatData;
+    public int Damage => _characterData.DamagePoints;
+    public ECharacterType CharacterType => _characterData.CharacterType;
+    public GameObject Prefab => _characterData.Prefab;
+    
+    private readonly CharacterData _characterData;
     private int _currHealth;
 
-    public CharacterModel(CharacterStatData characterStatData)
+    public CharacterModel(CharacterData characterStatData)
     {
-        _characterStatData = characterStatData;
+        _characterData = characterStatData;
     }
 
     public void Reset()
     {
-        _currHealth = _characterStatData.HealthPoints;
+        _currHealth = _characterData.HealthPoints;
     }
 
     public bool isAlive()

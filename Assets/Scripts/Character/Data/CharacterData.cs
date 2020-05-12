@@ -4,12 +4,13 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class CharacterStatData 
+public class CharacterData 
 {
     public ECharacterType CharacterType;
     public int HealthPoints;
     public int DamagePoints;
     public int MoveRange;
     public int AttackRange;
+    public GameObject Prefab;
 
 }

@@ -15,7 +15,7 @@ public interface ICharacter
     void DealDamage(ICharacter character);
     void Select();
 
-    void Move();
+    void Move(Vector3 position);
 
     bool isAlive();
 

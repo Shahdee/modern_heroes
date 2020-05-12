@@ -13,5 +13,6 @@ public class TeamInstaller : ScriptableObjectInstaller<TeamInstaller>
         Container.BindInterfacesTo<TeamController>().AsSingle();
         Container.BindInterfacesTo<TeamStorage>().AsSingle();
         Container.BindInterfacesTo<TeamFactory>().AsSingle();
+        Container.BindInterfacesTo<TeamPointStorage>().AsSingle();
     }
 }
