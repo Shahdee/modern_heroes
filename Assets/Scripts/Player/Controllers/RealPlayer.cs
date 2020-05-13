@@ -14,123 +14,142 @@ public class RealPlayer : AbstractPlayer, IDisposable
         // attack 
         // skip attack     
 
-    private readonly IInputController _inputController;
+    private readonly IHitController _hitController;
     private readonly ITeamStorage _teamStorage;
 
-    public RealPlayer(EPlayerType playerType, IInputController inputController, ITeamController teamController, ITeamStorage teamStorage) : base (playerType, teamController)
+    public RealPlayer(EPlayerType playerType, ITeamController teamController,
+                        ITeamStorage teamStorage, IHitController hitController) : base (playerType, teamController)
     {
-        _inputController = inputController;
+        _hitController = hitController;
         _teamStorage = teamStorage;
     }
 
-    private void OnTouch(Vector2 point)
+    private void OnHit(RaycastHit[] hits)
     {
         switch(_turnPhase)
         {
             case ETurnPhase.Select:
-                TrySelect(point);
+                TrySelect(hits);
             break;
 
             case ETurnPhase.Move:
-                TryMove(point);
+                TryMove(hits);
             break;
 
             case ETurnPhase.Attack:
-                TryAttack(point);
+                TryAttack(hits);
             break;
         }
-
-        // try select a character in that position 
-
-        // ask map to give selected object 
-        // if that object is my character 
-            // if can be selected 
-                // select it 
-
-
-        // link to selected character
-        //  touch to move 
-
-
-        // ground or 
-        // character 
-            // mine 
-            // enemy 
     }
-
 
     public override void StartTurn()
     {
-        _inputController.OnQuickTouch += OnTouch;
+        _hitController.OnHit += OnHit;
+        SetPhase(ETurnPhase.Select);
+    }
+
+    public override void ContinueTurn()
+    {
         SetPhase(ETurnPhase.Select);
     }
 
     public override void EndTurn()
     {
         _teamController.EndTurn();
-        _inputController.OnQuickTouch -= OnTouch;
+        _hitController.OnHit -= OnHit;
         SetPhase(ETurnPhase.Wait);
     }
 
-
-    private void TrySelect(Vector2 point)
+    public override void SkipPhase()
     {
-        TestSelect();
-    }
-
-    private void TryMove(Vector2 point)
-    {
-        // 
-
-
-    }
-
-    private void TryAttack(Vector2 point)
-    {
-        // get object on the map 
-        // if it's not my team => attack 
-        ICharacter characterToAttack = TestGetCharToAttack(); // tmp 
-
-        if (! _teamController.isMyTeam(characterToAttack))
+        switch(_turnPhase)
         {
-            _teamController.SelectedCharacter.DealDamage(characterToAttack);
+            case ETurnPhase.Select:
+                Debug.LogError("cant skip select");
+            break;
+
+            case ETurnPhase.Move:
+                SetPhase(ETurnPhase.Attack);
+            break;
+
+            case ETurnPhase.Attack:
+                _teamController.CancelAttack();                
+            break;
         }
     }
 
-    ICharacter TestGetCharToAttack()
+    public override void SkipWholeTurn()
     {
-        foreach(var tm in _teamStorage.AllTeams)
-        {
-            if (tm.Key != this)
-                return tm.Value.TestCharToAttack();
-        }
-        return null;
+        InvokeEndOfTurn();
     }
 
-    ICharacter TestGetCharToSelect()
+    private void TrySelect(RaycastHit[] hits)
     {
-        foreach(var tm in _teamStorage.AllTeams)
+        foreach(var hit in hits)
         {
-            if (tm.Key == this)
-                return tm.Value.TestCharToSelect();
-        }
-        return null;
-    }
-
-
-    void TestSelect()
-    {
-        // character selected on the map 
-
-        ICharacter character = TestGetCharToSelect();
-
-        if (_teamController.Select(character))
-        {
-            SetPhase(ETurnPhase.Attack);
-            
-            // todo  offer actions related to this character in ui 
+            var characterView = hit.transform.GetComponent<CharacterView>();
+            if (characterView != null)
+            {
+                if (_teamController.TrySelect(characterView))
+                {
+                    SetPhase(ETurnPhase.Move);
+                    break;
+                }
+            }
         }
     }
+
+    private void TryMove(RaycastHit[] hits)
+    {
+        if (hits.Length > 1) // this is not an empty cell 
+        {
+            Debug.LogError("not empty cell");
+            return;
+        }
+
+        foreach(var hit in hits)
+        {
+            var mapView = hit.transform.GetComponent<TileMapView>();
+            if (mapView != null)
+            {
+                var cell = mapView.Grid.WorldToCell(hit.point);
+                var position = mapView.TileMap.GetCellCenterWorld(cell);
+
+                if (_teamController.TryMove(position))
+                {
+                    SetPhase(ETurnPhase.Attack);
+                    return;
+                }
+            }
+        }
+    }
+
+    private void TryAttack(RaycastHit[] hits)
+    {
+        foreach(var hit in hits)
+        {
+            var characterView = hit.transform.GetComponent<CharacterView>();
+            if (characterView != null)
+            {
+                if (!_teamController.isMyTeam(characterView))
+                {
+                    foreach(var team in _teamStorage.AllTeams)
+                    {
+                        if (team.Key != this)
+                        {
+                            var characterToAttack = team.Value.GetCharacter(characterView);
+                            if (characterToAttack != null) 
+                            {
+                                _teamController.TryAttack(characterToAttack);
+                                return;
+                            }                        
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     void SetPhase(ETurnPhase phase)
     {
@@ -140,7 +159,6 @@ public class RealPlayer : AbstractPlayer, IDisposable
 
     public void Dispose()
     {
-        _inputController.OnQuickTouch -= OnTouch;
+        _hitController.OnHit -= OnHit;
     }
-
 }

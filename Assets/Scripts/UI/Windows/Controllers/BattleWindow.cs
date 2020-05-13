@@ -17,13 +17,10 @@ public class BattleWindow : AbstractWindow
     {
         _view = view;
         _battleController = battleController;
+        _battleController.OnTurnStart += UpdateView;
 
         _view.OnSkipPhase += PhaseSkip;
         _view.OnSkipPlayerTurn += PlayerTurnSkip;
-
-        // events 
-            // character selected 
-            // character deselected 
     }
 
     protected override void AfterOpen()
@@ -33,36 +30,19 @@ public class BattleWindow : AbstractWindow
 
     private void UpdateView()
     {
-
+        _view.ShowButtons(!_battleController.isCurrentAI());
     }
 
     private void PhaseSkip()
     {
-
+        _battleController.SkipPhase();
     }
 
     private void PlayerTurnSkip()
     {
-
+        _battleController.SkipWholeTurn();
     }
-
-    // player - is from my team ? 
-
-    // team - can move, can skip, can attack ? 
 
     // map - able to attack 
     // map - able to move 
-
-
-    // react to battle controller 
-
-    // show skip, attack, move, - if possible 
-
-    // send commands 
-        // skip , attack, move 
-
-    // who's turn is? 
-
-
-    
 }

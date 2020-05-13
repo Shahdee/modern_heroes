@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AbstractWindowView : MonoBehaviour, IWindowView
 {
-
     public void Open()
     {
         gameObject.SetActive(true);

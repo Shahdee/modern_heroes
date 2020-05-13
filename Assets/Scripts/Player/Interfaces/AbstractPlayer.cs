@@ -1,22 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class AbstractPlayer : IPlayer
 {
-    // TODO 
-    // team 
-    // attack  
-
-    // TODO Delay 
-    // select a character from a team 
-        // dont allow to select character which already made his turn 
 
     // move 
         // if possible 
-    // skip 
 
-
+    public event Action<IPlayer> PlayerEndedTurn;
+    public EPlayerType PlayerType => _playerType;
     protected readonly ITeamController _teamController;  
     protected readonly EPlayerType _playerType;  
     protected ETurnPhase _turnPhase;
@@ -30,5 +24,26 @@ public abstract class AbstractPlayer : IPlayer
 
     public abstract void StartTurn();
 
+    public abstract void ContinueTurn();
+
     public abstract void EndTurn();
+
+    public abstract void SkipPhase();
+
+    public abstract void SkipWholeTurn();
+
+    public bool isAlive()
+    {
+        return _teamController.isTeamAlive();
+    }
+
+    public bool hasTurns()
+    {
+        return _teamController.hasAvailable();
+    }
+
+    protected void InvokeEndOfTurn()
+    {
+        PlayerEndedTurn?.Invoke(this);
+    }
 }

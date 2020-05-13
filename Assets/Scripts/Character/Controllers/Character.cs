@@ -9,19 +9,25 @@ public class Character : ICharacter
     // public event Action<ICharacter> OnSelected;
     public ECharacterType CharacterType => _model.CharacterType;
     public int Health => _model.Health;
-    private readonly ICharacterModel _model;
+    public CharacterView CharacterView {get;}
 
-    CharacterView _view;
+    private readonly ICharacterModel _model;
 
     public Character(ICharacterModel model, CharacterView view)
     {
         _model = model;
-        _view = view;
+        CharacterView = view;
     }
 
     public void ReceiveDamage(int damage)
     {
        _model.ReceiveDamage(damage);
+
+        if (isAlive())
+            CharacterView.Blink();
+        else
+            CharacterView.SetActive(false);
+
         OnDamaged?.Invoke(this);
     }
 
@@ -31,16 +37,14 @@ public class Character : ICharacter
         Debug.Log(CharacterType + " deals " + _model.Damage + " => " + character.CharacterType + " hp left " + character.Health);
     }
 
-    public void Select()
-    {
-        // todo 
-
-
+    public void Select(bool select)
+    {   
+        CharacterView.Highlight(select);
     }
 
     public void Move(Vector3 position)
     {
-        _view.transform.position = position;
+        CharacterView.transform.position = position;
     }
 
     public bool isAlive()
@@ -50,11 +54,7 @@ public class Character : ICharacter
 
     public void Reset()
     {
-        // todo 
-        
-        // put character on initial position 
-        // reset view 
-
         _model.Reset();
+        CharacterView.SetActive(true);
     }
 }

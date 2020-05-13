@@ -5,7 +5,7 @@ using System;
 
 public interface IInputController
 {
-    event Action<Vector2> OnQuickTouch;
+    event Action<Vector3> OnQuickTouch;
     bool Enabled {get;}
     void SetEnabled(bool enabled);
 

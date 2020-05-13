@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Zenject;
-
+using System.Linq;
 
 
 public class BattleController : IBattleController
 {
+    public event Action OnTurnStart;
     public event Action OnBattleStart;
     public event Action OnBattleEnd;
-
-    // target selection 
-    // actions from ui to battle controller 
+    public EPlayerType Winner => _winnerPlayer.PlayerType;
 
     private readonly ITeamStorage _teamStorage;
     private readonly List<IPlayer> _opponents;
     private IPlayer _currentPlayer;
+    private IPlayer _winnerPlayer;
     private int _currentOpponentIndex;
 
-    public BattleController(ITeamStorage teamStorage) //, IMapController mapController) 
+    public BattleController(ITeamStorage teamStorage)
     {
         _teamStorage = teamStorage;
         _opponents = new List<IPlayer>();
@@ -32,17 +32,35 @@ public class BattleController : IBattleController
         ResetPlayers();
         ResetTeams();
 
-        OnBattleStart?.Invoke();
-
         GiveControlToNextPlayer();
+
+        OnBattleStart?.Invoke();
+    }
+
+    public void SkipPhase()
+    {
+        _currentPlayer.SkipPhase();
+    }
+
+    public void SkipWholeTurn()
+    {
+        PlayerEndedTurn();
+    }
+
+    public bool isCurrentAI()
+    {
+        return _currentPlayer.PlayerType == EPlayerType.AI;
     }
 
     private void InitTeams()
     {
+        _opponents.Clear();
+
         foreach(var team in _teamStorage.AllTeams)
         {
             _opponents.Add(team.Key);
             team.Value.OnCharacterDamaged += CharacterDamaged;
+            team.Value.OnAttackCanceled += AttackSkipped;
         }
     }
 
@@ -55,12 +73,11 @@ public class BattleController : IBattleController
     private void ResetPlayers()
     {
         _currentOpponentIndex = -1;
+        _winnerPlayer = null;
     }
 
     private void PlayerEndedTurn()
     {
-        Debug.Log("PlayerEndedTurn ");
-
         GiveControlToNextPlayer();
     }
 
@@ -76,6 +93,8 @@ public class BattleController : IBattleController
 
         _currentPlayer = _opponents[_currentOpponentIndex];
         _currentPlayer.StartTurn();
+
+        OnTurnStart?.Invoke();
     }
 
     private void ReleasePlayer()
@@ -89,21 +108,39 @@ public class BattleController : IBattleController
 
     private void FinishBattle()
     {
+        _winnerPlayer = _currentPlayer;
+
         ReleasePlayer();
+        ReleaseTeams();
         OnBattleEnd?.Invoke();
+    }
+
+    private void ReleaseTeams()
+    {
+        foreach(var team in _teamStorage.AllTeams)
+            team.Value.OnCharacterDamaged -= CharacterDamaged;
     }
 
     private void CharacterDamaged(ICharacter character, ITeamController teamController)
     {
-        if (teamController.isAlive())
-        {
-            PlayerEndedTurn();
-        }
+        if (! teamController.isTeamAlive())
+            FinishBattle();
+        else
+            GiveChanceToPlayer();
+    }
+
+    private void AttackSkipped(ITeamController teamController)
+    {
+        GiveChanceToPlayer();
+    }
+
+    private void GiveChanceToPlayer()
+    {
+        if (_currentPlayer.hasTurns())
+            _currentPlayer.ContinueTurn();
         else
         {
-            Debug.Log("Player " + _currentOpponentIndex + " won ");
-
-            FinishBattle();
+            PlayerEndedTurn();
         }
     }
 }

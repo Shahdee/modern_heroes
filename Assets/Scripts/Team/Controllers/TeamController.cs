@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class TeamController : ITeamController
 {
@@ -9,11 +10,11 @@ public class TeamController : ITeamController
     // i can get team characters using team storage later 
 
     public event Action<ICharacter, ITeamController> OnCharacterDamaged;
+    public event Action<ITeamController> OnAttackCanceled;
     public ICharacter SelectedCharacter => _selectedCharacter;
     private readonly List<ICharacter> _teamCharacters;
     private readonly List<ICharacter> _deadCharacters;
     private readonly List<ICharacter> _availableCharacters;
-    private readonly List<ICharacter> _madeTurnCharacters;
     private readonly IMapController _mapController;
     private readonly TeamData _teamData;
     private ICharacter _selectedCharacter;
@@ -26,7 +27,6 @@ public class TeamController : ITeamController
 
         _deadCharacters = new List<ICharacter>();
         _availableCharacters = new List<ICharacter>();
-        _madeTurnCharacters = new List<ICharacter>();
 
         foreach(var character in _teamCharacters)
             character.OnDamaged += CharacterReceiveDamage;
@@ -34,10 +34,6 @@ public class TeamController : ITeamController
 
     public void ResetTeam()
     {
-        _deadCharacters.Clear();
-        _availableCharacters.Clear();
-        _madeTurnCharacters.Clear();
-
         List<Vector3> teamTiles = _mapController.GetTeamTiles(_teamData.SpawnTile);
 
         if (teamTiles.Count != _teamCharacters.Count)
@@ -49,10 +45,35 @@ public class TeamController : ITeamController
         {
             character.Reset();
             character.Move(teamTiles[positionIndex]);
-            _availableCharacters.Add(character);
-
             positionIndex++;
         }
+
+        _deadCharacters.Clear();   
+        FillAvailableCharacters();
+    }
+
+    public bool TrySelect(CharacterView view)
+    {
+        foreach(var character in _teamCharacters)
+        {
+            if(character.CharacterView == view)
+            {
+                 if (character.isAlive() && isAvailable(character))
+                 {
+                     SelectCharacter(character);
+                     return true;
+                 }
+                 else
+                    return false;
+            }
+        }
+        return false;
+    }
+
+    public bool TryMove(Vector3 position)
+    {
+        _selectedCharacter.Move(position);
+        return true;
     }
 
     public bool Select(ICharacter character)
@@ -60,8 +81,7 @@ public class TeamController : ITeamController
         if (!character.isAlive() || !isMyTeam(character) || !isAvailable(character))
             return false;
 
-        _selectedCharacter = character;
-        character.Select();
+        Select(character);
         
         return true;
     }
@@ -71,14 +91,79 @@ public class TeamController : ITeamController
         return _teamCharacters.Contains(character);
     }
 
-    public bool isAlive()
+    public bool isMyTeam(CharacterView view)
+    {
+        return (_teamCharacters.FirstOrDefault(ch => ch.CharacterView == view) != null);
+    }
+
+    public bool isTeamAlive()
     {
         return (_deadCharacters.Count < _teamCharacters.Count);
     }
 
     public void EndTurn()
     {
-        _selectedCharacter = null;
+        DeselectCharacter();
+        FillAvailableCharacters();
+    }
+
+    public ICharacter GetCharacter(CharacterView view)
+    {
+       var character = _teamCharacters.FirstOrDefault(ch => ch.CharacterView == view);
+       return character;
+    }
+
+    public void CancelAttack()
+    {
+        DeselectCharacter();
+        OnAttackCanceled?.Invoke(this);
+    }
+
+    public bool TryAttack(ICharacter enemy)
+    {
+        if (enemy.isAlive())
+        {
+            var chosenOne = _selectedCharacter;
+
+            DeselectCharacter();
+
+            chosenOne.DealDamage(enemy);
+            return true;
+        }
+        Debug.Log("cant attack dead bodies");
+        return false;
+    }
+
+    public bool hasAvailable()
+    {
+        return _availableCharacters.Any();
+    }
+
+    private void SelectCharacter(ICharacter character)
+    {
+        _selectedCharacter = character;
+        _selectedCharacter.Select(true);
+        _availableCharacters.Remove(_selectedCharacter);
+    }
+
+    private void FillAvailableCharacters()
+    {
+        _availableCharacters.Clear();
+
+        foreach(var character in _teamCharacters)
+        {
+            if (character.isAlive())
+                _availableCharacters.Add(character);
+        }
+    }
+
+    private void DeselectCharacter()
+    {
+        if (_selectedCharacter!=null)
+        {
+            _selectedCharacter.Select(false);
+            _selectedCharacter = null;
+        }
     }
 
     private bool isAvailable(ICharacter character)
@@ -89,10 +174,14 @@ public class TeamController : ITeamController
     private void CharacterReceiveDamage(ICharacter character)
     {
         if (! character.isAlive())
-        {
-            _availableCharacters.Remove(character);
-            _deadCharacters.Add(character);
+        {   
+            if (!_deadCharacters.Contains(character))
+                _deadCharacters.Add(character);
+            
+            if (_availableCharacters.Contains(character))
+                _availableCharacters.Remove(character);
         }
+        
         OnCharacterDamaged?.Invoke(character, this);
     }
 

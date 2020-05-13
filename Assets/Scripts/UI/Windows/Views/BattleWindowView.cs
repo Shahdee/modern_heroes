@@ -27,5 +27,11 @@ public class BattleWindowView : AbstractWindowView
     {
         OnSkipPlayerTurn?.Invoke();
     }
+
+    public void ShowButtons(bool show)
+    {
+        _btnSkipPhase.gameObject.SetActive(show);
+        _btnSkipPlayerTurn.gameObject.SetActive(show);
+    }
     
 }

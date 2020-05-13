@@ -15,9 +15,24 @@ public class AIPlayer : AbstractPlayer
         
     }
 
+    public override void ContinueTurn()
+    {
+        
+    }
+
     public override void EndTurn()
     {
 
+    }
+
+    public override void SkipPhase()
+    {
+
+    }
+
+    public override void SkipWholeTurn()
+    {
+        
     }
 
     // update behaviour ? 

@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class PlayerFactory : IPlayerFactory
 {
-    private readonly IInputController _inputController;
+    private readonly IHitController _hitController;
+    private readonly ITeamStorage _storage;
 
-    ITeamStorage _storage;
-
-    public PlayerFactory(IInputController inputController, ITeamStorage storage) // tmp - storage
+    public PlayerFactory(IHitController hitController, ITeamStorage storage) // tmp - storage, just for tests here
     {
-        _inputController = inputController;
-
+        _hitController = hitController;
         _storage = storage;
     }
 
@@ -20,7 +18,7 @@ public class PlayerFactory : IPlayerFactory
        switch(playerType)
        {
            case EPlayerType.Real:
-                return new RealPlayer(playerType, _inputController, teamController, _storage);
+                return new RealPlayer(playerType, teamController, _storage, _hitController);
 
            case EPlayerType.AI:
                 return new AIPlayer(playerType, teamController);

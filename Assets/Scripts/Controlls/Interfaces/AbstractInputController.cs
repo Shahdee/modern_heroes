@@ -7,7 +7,7 @@ using Zenject;
 
 public abstract class AbstractInputController : IInputController, ITickable
 {
-    public event Action<Vector2> OnQuickTouch;
+    public event Action<Vector3> OnQuickTouch;
     public bool Enabled => _enabled;
     protected const float QuickTouchMaxTimeDelta = 0.5f;
     protected bool _enabled;

@@ -6,8 +6,14 @@ using System;
 public interface IPlayer 
 {
     // events 
-    
-    void StartTurn();
 
+    event Action<IPlayer> PlayerEndedTurn;
+    EPlayerType PlayerType {get;}
+    void StartTurn();
+    void ContinueTurn();
     void EndTurn();
+    bool hasTurns();
+    void SkipPhase();
+    void SkipWholeTurn();
+    bool isAlive();
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7737397968387012487}
   - component: {fileID: 6863190784954913799}
+  - component: {fileID: 8492778756962719865}
   m_Layer: 0
   m_Name: Healer
   m_TagString: Untagged
@@ -44,6 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3794dcad398a84c319ec726efb13a602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 4341656865826535171}
+--- !u!135 &8492778756962719865
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6741189315010401736}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &7576072722225750047
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,9 +70,8 @@ GameObject:
   - component: {fileID: 2577336425317842037}
   - component: {fileID: 2637116912945675592}
   - component: {fileID: 4341656865826535171}
-  - component: {fileID: 8871011352931073157}
   m_Layer: 0
-  m_Name: Dummy
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,7 +116,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 68b8c76fe6ec948cc99828ceb5b101d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,16 +137,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &8871011352931073157
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7576072722225750047}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}

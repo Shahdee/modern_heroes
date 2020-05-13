@@ -7,10 +7,16 @@ using UnityEngine.EventSystems;
 public class MouseController : AbstractInputController 
 {
     private DateTime _quickTouchCurrTime;
-    private Vector2 _touchCurrPosition;
+    private Vector3 _touchCurrPosition;
 
     protected override void UpdateInput()
     {
+        if (_touchInProgress && EventSystem.current.IsPointerOverGameObject())
+        {
+             _touchInProgress = false;
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             _quickTouchCurrTime = DateTime.Now;
