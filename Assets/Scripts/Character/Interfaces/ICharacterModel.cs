@@ -6,6 +6,9 @@ public interface ICharacterModel
 {
     int Health {get;}
     int Damage {get;}
+    float MoveRange {get;}
+    float AttackRange {get;}
+
     ECharacterType CharacterType {get;}
     GameObject Prefab {get;}
 

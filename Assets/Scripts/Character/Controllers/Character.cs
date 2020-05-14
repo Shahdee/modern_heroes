@@ -6,10 +6,12 @@ using UnityEngine;
 public class Character : ICharacter
 {
     public event Action<ICharacter> OnDamaged;
-    // public event Action<ICharacter> OnSelected;
     public ECharacterType CharacterType => _model.CharacterType;
     public int Health => _model.Health;
+    public float AttackRange => _model.AttackRange;
+    public float MoveRange => _model.MoveRange;
     public CharacterView CharacterView {get;}
+    public Vector3 Position => CharacterView.transform.position;
 
     private readonly ICharacterModel _model;
 
@@ -56,5 +58,15 @@ public class Character : ICharacter
     {
         _model.Reset();
         CharacterView.SetActive(true);
+    }
+
+    public bool isCloseToMove(Vector3 position)
+    {
+        return (Vector3.Distance(position, CharacterView.transform.position) <=  _model.MoveRange);
+    }
+
+    public bool isCloseToHit(Vector3 position)
+    {
+        return (Vector3.Distance(position, CharacterView.transform.position) <=  _model.AttackRange);
     }
 }

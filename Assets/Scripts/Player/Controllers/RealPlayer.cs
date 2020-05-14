@@ -5,15 +5,6 @@ using System;
 
 public class RealPlayer : AbstractPlayer, IDisposable
 {
-
-    // select unit 
-        // move 
-        // skip move 
-            // once moved, we can't select another ally 
-
-        // attack 
-        // skip attack     
-
     private readonly IHitController _hitController;
     private readonly ITeamStorage _teamStorage;
 
@@ -22,6 +13,8 @@ public class RealPlayer : AbstractPlayer, IDisposable
     {
         _hitController = hitController;
         _teamStorage = teamStorage;
+
+        Debug.Log( "real" + GetHashCode());
     }
 
     private void OnHit(RaycastHit[] hits)
@@ -62,6 +55,7 @@ public class RealPlayer : AbstractPlayer, IDisposable
 
     public override void SkipPhase()
     {
+        Debug.Log("SkipPhase " + _playerType);
         switch(_turnPhase)
         {
             case ETurnPhase.Select:
@@ -151,10 +145,10 @@ public class RealPlayer : AbstractPlayer, IDisposable
     }
 
 
-    void SetPhase(ETurnPhase phase)
+    protected override void SetPhase(ETurnPhase phase)
     {
         _turnPhase = phase;
-        Debug.Log("next phase => " + phase);
+        Debug.Log("next phase => " + phase + " / " + _playerType);
     }
 
     public void Dispose()

@@ -51,11 +51,17 @@ public class MapController : IMapController
 
                     teamTiles.Add(_tilemapView.TileMap.GetCellCenterWorld(tmpCoords));
                 }
-
-                // Debug.Log("at " + i + " / " + y +  " tile " + tile);
             }
         }
         
         return teamTiles;
+    }
+
+    public bool isSameCell(Vector3 pos1, Vector3 pos2)
+    {
+        Vector3Int cellCoord1 = _tilemapView.TileMap.WorldToCell(pos1);
+        Vector3Int cellCoord2 = _tilemapView.TileMap.WorldToCell(pos2);
+
+        return cellCoord1.Equals(cellCoord2);
     }
 }

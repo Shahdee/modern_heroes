@@ -5,10 +5,6 @@ using System;
 
 public abstract class AbstractPlayer : IPlayer
 {
-
-    // move 
-        // if possible 
-
     public event Action<IPlayer> PlayerEndedTurn;
     public EPlayerType PlayerType => _playerType;
     protected readonly ITeamController _teamController;  
@@ -31,6 +27,8 @@ public abstract class AbstractPlayer : IPlayer
     public abstract void SkipPhase();
 
     public abstract void SkipWholeTurn();
+
+    protected abstract void SetPhase(ETurnPhase phase);
 
     public bool isAlive()
     {

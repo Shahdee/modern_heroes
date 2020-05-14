@@ -25,10 +25,6 @@ public class HitController : IHitController
     {
         var ray = Camera.main.ScreenPointToRay(touch);
         var hits3D = Physics.RaycastAll(ray);
-        // foreach (var hitInfo in hits3D)
-        // {
-        //     Debug.Log("hit " + hitInfo.transform.name + " / " + hitInfo.point);
-        // }
 
         if (hits3D != null && hits3D.Length > 0)
             OnHit?.Invoke(hits3D);

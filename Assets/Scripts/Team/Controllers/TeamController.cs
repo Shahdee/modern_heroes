@@ -12,18 +12,22 @@ public class TeamController : ITeamController
     public event Action<ICharacter, ITeamController> OnCharacterDamaged;
     public event Action<ITeamController> OnAttackCanceled;
     public ICharacter SelectedCharacter => _selectedCharacter;
+    public List<ICharacter> AvailableCharacters => _availableCharacters;
+    public List<ICharacter> TeamCharacters => _teamCharacters;
     private readonly List<ICharacter> _teamCharacters;
     private readonly List<ICharacter> _deadCharacters;
     private readonly List<ICharacter> _availableCharacters;
     private readonly IMapController _mapController;
     private readonly TeamData _teamData;
+    private readonly IRangeSphereController _rangeSphereController;
     private ICharacter _selectedCharacter;
 
-    public TeamController(TeamData teamData, List<ICharacter> teamCharacters, IMapController mapController)
+    public TeamController(TeamData teamData, List<ICharacter> teamCharacters, IMapController mapController, IRangeSphereController rangeSphereController)
     {
         _teamData = teamData;
         _teamCharacters = teamCharacters;
         _mapController = mapController;
+        _rangeSphereController = rangeSphereController;
 
         _deadCharacters = new List<ICharacter>();
         _availableCharacters = new List<ICharacter>();
@@ -72,18 +76,22 @@ public class TeamController : ITeamController
 
     public bool TryMove(Vector3 position)
     {
-        _selectedCharacter.Move(position);
-        return true;
+        if (_selectedCharacter.isCloseToMove(position))
+        {
+            _selectedCharacter.Move(position);
+            _rangeSphereController.ShowSphere(_selectedCharacter, ERangeSphereType.Attack);
+            return true;
+        }
+        Debug.Log("it's far");
+        return false;
     }
 
-    public bool Select(ICharacter character)
+    public void Select(ICharacter character)
     {
         if (!character.isAlive() || !isMyTeam(character) || !isAvailable(character))
-            return false;
+            return;
 
-        Select(character);
-        
-        return true;
+        SelectCharacter(character);
     }
 
     public bool isMyTeam(ICharacter character)
@@ -121,17 +129,22 @@ public class TeamController : ITeamController
 
     public bool TryAttack(ICharacter enemy)
     {
-        if (enemy.isAlive())
+        if (! enemy.isAlive())
         {
-            var chosenOne = _selectedCharacter;
-
-            DeselectCharacter();
-
-            chosenOne.DealDamage(enemy);
-            return true;
+            Debug.Log("enemy is dead");
+            return false;
         }
-        Debug.Log("cant attack dead bodies");
-        return false;
+
+        if (! _selectedCharacter.isCloseToHit(enemy.Position))
+        {
+            Debug.Log("enemy is far");
+            return false;
+        }
+
+        var chosenOne = _selectedCharacter;
+        DeselectCharacter();
+        chosenOne.DealDamage(enemy);
+        return true;
     }
 
     public bool hasAvailable()
@@ -144,6 +157,7 @@ public class TeamController : ITeamController
         _selectedCharacter = character;
         _selectedCharacter.Select(true);
         _availableCharacters.Remove(_selectedCharacter);
+        _rangeSphereController.ShowSphere(_selectedCharacter, ERangeSphereType.Move);
     }
 
     private void FillAvailableCharacters()
@@ -163,6 +177,7 @@ public class TeamController : ITeamController
         {
             _selectedCharacter.Select(false);
             _selectedCharacter = null;
+            _rangeSphereController.HideSphere();
         }
     }
 
@@ -181,17 +196,6 @@ public class TeamController : ITeamController
             if (_availableCharacters.Contains(character))
                 _availableCharacters.Remove(character);
         }
-        
         OnCharacterDamaged?.Invoke(character, this);
-    }
-
-    public ICharacter TestCharToAttack()
-    {
-        return _teamCharacters[0];
-    }
-
-    public ICharacter TestCharToSelect()
-    {
-        return _teamCharacters[0];
     }
 }

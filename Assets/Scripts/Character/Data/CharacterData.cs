@@ -9,8 +9,8 @@ public class CharacterData
     public ECharacterType CharacterType;
     public int HealthPoints;
     public int DamagePoints;
-    public int MoveRange;
-    public int AttackRange;
+    public float MoveRange;
+    public float AttackRange;
     public GameObject Prefab;
 
 }

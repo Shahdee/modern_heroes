@@ -17,7 +17,7 @@ public class EndWIndow : AbstractWindow
 
     protected override void AfterOpen()
     {
-        _view.Description.text = _battleController.Winner.ToString();
+        _view.Description.text = _battleController.Winner.ToString() + " WON ";
     }
 
     private void StartGame()

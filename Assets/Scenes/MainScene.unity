@@ -259,7 +259,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 6.9e-44, z: 3.339e-42, w: 1.05e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -397,6 +397,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ec0c2427b442a489282a78b69bf14a0a, type: 2}
   - {fileID: 11400000, guid: ff21f281ebe6b45ae9c96319d3a9a490, type: 2}
   - {fileID: 11400000, guid: e97d36e8ad23c44eb91b7c37b07d5b54, type: 2}
+  - {fileID: 11400000, guid: f9d1d11a39b5d489483c68d5d8350f50, type: 2}
+  - {fileID: 11400000, guid: bbdab17369a33430abc2877df4455c24, type: 2}
   _monoInstallers:
   - {fileID: 1898726706}
   _installerPrefabs: []

@@ -16,28 +16,28 @@ MonoBehaviour:
   - CharacterType: 0
     HealthPoints: 100
     DamagePoints: 100
-    MoveRange: 0
-    AttackRange: 0
+    MoveRange: 3
+    AttackRange: 4
     Prefab: {fileID: 6317517183754792339, guid: 293a889f3ae974500a343fa7fca34370,
       type: 3}
   - CharacterType: 1
     HealthPoints: 150
     DamagePoints: 4
-    MoveRange: 0
-    AttackRange: 0
+    MoveRange: 3
+    AttackRange: 4
     Prefab: {fileID: 6741189315010401736, guid: 45bbaf3c7674d4eb19488f26f349c8f6,
       type: 3}
   - CharacterType: 2
     HealthPoints: 200
     DamagePoints: 40
-    MoveRange: 0
-    AttackRange: 0
+    MoveRange: 3
+    AttackRange: 5
     Prefab: {fileID: 2657864922946459352, guid: 9f65e9dcc517b46839c4751dd9d01abe,
       type: 3}
   - CharacterType: 3
     HealthPoints: 300
     DamagePoints: 50
-    MoveRange: 0
-    AttackRange: 0
+    MoveRange: 3
+    AttackRange: 5
     Prefab: {fileID: 2959888704719836824, guid: 82d74b0656272401682404e1cd283ecf,
       type: 3}

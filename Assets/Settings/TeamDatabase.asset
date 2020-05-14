@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _teamData:
   - PlayerType: 0
-    Characters: 0000000000000000
+    Characters: 000000000100000000000000
     SpawnTile: {fileID: 11400000, guid: a8743b62863ff4d9a88ff89a52c3dd23, type: 2}
-  - PlayerType: 0
-    Characters: 0200000002000000
+  - PlayerType: 1
+    Characters: 02000000030000000100000002000000
     SpawnTile: {fileID: 11400000, guid: 2cbcc87b64d2e45e39a993e60708bb9d, type: 2}

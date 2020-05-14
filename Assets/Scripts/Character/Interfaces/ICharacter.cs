@@ -8,7 +8,9 @@ public interface ICharacter
     event Action<ICharacter> OnDamaged;
     ECharacterType CharacterType {get;}
     int Health {get;}
-
+    float AttackRange {get;}
+    float MoveRange {get;}
+    Vector3 Position {get;}
     CharacterView CharacterView {get;}
 
     void Reset();
@@ -18,7 +20,6 @@ public interface ICharacter
     void Select(bool select);
     void Move(Vector3 position);
     bool isAlive();
-
-    // show attack grid 
-    // show move grid 
+    bool isCloseToMove(Vector3 position);
+    bool isCloseToHit(Vector3 position);
 }
