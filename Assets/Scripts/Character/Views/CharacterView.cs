@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CharacterView : MonoBehaviour
 {
+    public Vector3 AttachPoint => _attachObject.position;
     [SerializeField] private Renderer _renderer;
+    [SerializeField] private Transform _attachObject;
 
     private static Color ActiveColor = Color.white;
     private static Color BlinkColor = Color.red;

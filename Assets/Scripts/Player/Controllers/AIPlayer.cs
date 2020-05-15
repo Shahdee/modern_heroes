@@ -138,8 +138,9 @@ public class AIPlayer : AbstractPlayer
             teleportDistance -= delta;
 
             var teleportPoint = _teamController.SelectedCharacter.Position + direction * teleportDistance;
+            var convertedPoint = _mapController.GetCellCenterPoint(teleportPoint);
 
-            if (!PointIsOccupied(teleportPoint) && _teamController.TryMove(teleportPoint))
+            if (!PointIsOccupied(convertedPoint) && _teamController.TryMove(convertedPoint))
                 return true;
         }
         return false; 

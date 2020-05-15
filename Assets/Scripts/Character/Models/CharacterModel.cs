@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterModel : ICharacterModel
 {
     public int Health => _currHealth;
+    public float NormHealth => _currHealth/(float)_characterData.HealthPoints;
     public int Damage => _characterData.DamagePoints;
     public float MoveRange => _characterData.MoveRange;
     public float AttackRange => _characterData.AttackRange;

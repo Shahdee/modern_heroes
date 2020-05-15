@@ -64,4 +64,10 @@ public class MapController : IMapController
 
         return cellCoord1.Equals(cellCoord2);
     }
+
+    public Vector3 GetCellCenterPoint(Vector3 worldPosition)
+    {
+        Vector3Int cellCoord = _tilemapView.TileMap.WorldToCell(worldPosition);
+        return _tilemapView.TileMap.GetCellCenterWorld(cellCoord);   
+    }
 }

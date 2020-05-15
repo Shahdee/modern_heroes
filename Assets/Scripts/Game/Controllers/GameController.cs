@@ -18,12 +18,14 @@ public class GameController : IGameController, IInitializable, IDisposable
     private readonly ITeamStorage _teamStorage;
     private readonly IUIController _uiController;
     private readonly IBattleController _battleController;
+    private readonly IHealthBarController _healthBarController;
     private EGameState _currentGameState = EGameState.Lobby;
     private bool _forceSetState = true;
 
     public GameController(ICharacterFactory characterFactory, ICharacterDataProvider characterStatDataProvider,
                         TeamDatabaseAsset teamDatabaseAsset, IPlayerFactory playerFactory, ICharacterModelFactory characterModelFactory, 
-                        ITeamFactory teamFactory, ITeamStorage teamStorage, IUIController uiController, IBattleController battleController)
+                        ITeamFactory teamFactory, ITeamStorage teamStorage, IUIController uiController, IBattleController battleController, 
+                        IHealthBarController healthBarController)
     {
         _characterFactory = characterFactory;
         _characterDataProvider = characterStatDataProvider;
@@ -32,6 +34,7 @@ public class GameController : IGameController, IInitializable, IDisposable
         _characterModelFactory = characterModelFactory;
         _teamFactory = teamFactory;
         _teamStorage = teamStorage;
+        _healthBarController = healthBarController;
 
         _uiController = uiController;
         _battleController = battleController;
@@ -70,10 +73,13 @@ public class GameController : IGameController, IInitializable, IDisposable
 
             case EGameState.InBattle:
                 _uiController.OpenWindow(EWindowType.Battle);
+                _healthBarController.ShowHealthBars(true);
+
             break;
 
             case EGameState.BattleEnd:
                 _uiController.OpenWindow(EWindowType.End);
+                _healthBarController.ShowHealthBars(false);
             break;
         }   
     }

@@ -20,3 +20,5 @@ MonoBehaviour:
     type: 3}
   _endWindowView: {fileID: 26698944877155973, guid: fb6307862b11d4f79be6047cadb380bf,
     type: 3}
+  _healthBarView: {fileID: 999395075008956247, guid: bf3673b3411554f66a3e92a5bda55b02,
+    type: 3}

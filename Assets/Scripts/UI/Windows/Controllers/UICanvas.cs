@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UICanvas : IUICanvas
 {
+    public float ScaleFactor => _canvasView.ScaleFactor;
+    public Transform Parent => _canvasView.transform;
+
     private readonly UICanvasView _canvasView;
 
     public UICanvas(UICanvasView canvasView, List<IWindow> windows)

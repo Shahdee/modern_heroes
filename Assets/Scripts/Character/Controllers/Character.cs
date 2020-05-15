@@ -6,12 +6,16 @@ using UnityEngine;
 public class Character : ICharacter
 {
     public event Action<ICharacter> OnDamaged;
+    public event Action<ICharacter> OnMove;
+    public event Action<ICharacter> OnReset;
     public ECharacterType CharacterType => _model.CharacterType;
     public int Health => _model.Health;
+    public float NormHealth => _model.NormHealth;
     public float AttackRange => _model.AttackRange;
     public float MoveRange => _model.MoveRange;
     public CharacterView CharacterView {get;}
     public Vector3 Position => CharacterView.transform.position;
+    public Vector3 AttachPoint => CharacterView.AttachPoint;
 
     private readonly ICharacterModel _model;
 
@@ -47,6 +51,7 @@ public class Character : ICharacter
     public void Move(Vector3 position)
     {
         CharacterView.transform.position = position;
+        OnMove?.Invoke(this);
     }
 
     public bool isAlive()
@@ -58,6 +63,7 @@ public class Character : ICharacter
     {
         _model.Reset();
         CharacterView.SetActive(true);
+        OnReset?.Invoke(this);
     }
 
     public bool isCloseToMove(Vector3 position)

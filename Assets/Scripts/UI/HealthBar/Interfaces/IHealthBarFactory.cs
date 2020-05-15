@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUICanvas 
+public interface IHealthBarFactory 
 {
-    Transform Parent {get;}
-    float ScaleFactor {get;}
+    HealthBarView Create();
 }

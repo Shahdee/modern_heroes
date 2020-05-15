@@ -8,11 +8,11 @@ public class UIInstaller : ScriptableObjectInstaller<UIInstaller>
     [SerializeField] private MainWindowView _mainWindowView;
     [SerializeField] private BattleWindowView _battleWindowView;
     [SerializeField] private EndWindowView _endWindowView;
+    [SerializeField] private HealthBarView _healthBarView;
 
     public override void InstallBindings()
     {
-        Container.Bind<UICanvasView>().FromComponentInNewPrefab(_canvasView).AsSingle();
-
+        BindHealthBar();
         BindWindows();
 
         Container.BindInterfacesTo<WindowStorage>().AsSingle();
@@ -20,18 +20,28 @@ public class UIInstaller : ScriptableObjectInstaller<UIInstaller>
         Container.BindInterfacesTo<UICanvas>().AsSingle().NonLazy();
     }
 
+    private void BindHealthBar()
+    {
+        Container.BindInstance(_healthBarView);
+
+        Container.BindInterfacesTo<HealthBarController>().AsSingle();
+        Container.BindInterfacesTo<HealthBarFactory>().AsSingle();
+        Container.BindInterfacesTo<HealthBarStorage>().AsSingle();
+    }
+
     private void BindWindows()
     {
-        BindPrefab(_mainWindowView);
-        BindPrefab(_battleWindowView);
-        BindPrefab(_endWindowView);
+        BindAsset(_mainWindowView);
+        BindAsset(_battleWindowView);
+        BindAsset(_endWindowView);
+        BindAsset(_canvasView);
 
         Container.BindInterfacesTo<MainWindow>().AsSingle();
         Container.BindInterfacesTo<BattleWindow>().AsSingle();
         Container.BindInterfacesTo<EndWIndow>().AsSingle();
     }
 
-    private void BindPrefab<T>(T prefab) where T : MonoBehaviour
+    private void BindAsset<T>(T prefab) where T : MonoBehaviour
     {
         Container.Bind<T>().FromComponentInNewPrefab(prefab).AsSingle();
     }

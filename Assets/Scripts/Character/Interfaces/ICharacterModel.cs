@@ -5,6 +5,7 @@ using UnityEngine;
 public interface ICharacterModel 
 {
     int Health {get;}
+    float NormHealth {get;}
     int Damage {get;}
     float MoveRange {get;}
     float AttackRange {get;}
