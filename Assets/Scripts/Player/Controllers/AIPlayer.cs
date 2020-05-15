@@ -9,6 +9,7 @@ public class AIPlayer : AbstractPlayer
     private readonly IMapController _mapController;
     private static float _stepGranularity = 0.25f;
     private static float _aiResponseDelay = 0.5f;
+    private static float _aiChanceToSkip = 0.25f;
 
     public AIPlayer(EPlayerType playerType, ITeamController teamController, ITeamStorage teamStorage,
             ICoroutineManager coroutineManager, IMapController mapController) : base (playerType, teamController)
@@ -78,19 +79,30 @@ public class AIPlayer : AbstractPlayer
             break;
 
             case ETurnPhase.Move:
-                // todo or skip 
-                TryMove();
+
+                if (TrySkip())
+                    SkipPhase();
+                else
+                    TryMove();
             break;
 
             case ETurnPhase.Attack:
-                // todo or skip 
-                TryAttack();
+                if (TrySkip())
+                    SkipPhase();
+                else
+                    TryAttack();
             break;
 
             case ETurnPhase.Wait:
                 // do nothing 
             break;
         }
+    }
+
+    private bool TrySkip()
+    {
+        var magicNumber = UnityEngine.Random.Range(0, 1f);
+        return (magicNumber < _aiChanceToSkip);
     }
 
     private void TrySelect()
