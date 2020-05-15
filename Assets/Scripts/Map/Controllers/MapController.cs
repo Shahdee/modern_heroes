@@ -5,17 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class MapController : IMapController
 {
-     // Raycast against tile 
-    // WorldToCell
-    //     public Vector3 GetCellCenterWorld(Vector3Int position);
-    // Give tile id / world coordinates 
-    // // up 
-    // Highlight cell in a given radius 
-    //     Tilemap.SetTile
-    // Collapse map to painted area 
-    // Provide initial position for characters 
-    // Tell that a given cell is occupied by another player 
-
     private readonly TileMapView _tilemapView;
     private readonly ITeamPointStorage _teamPointStorage;
     private readonly ITeamStorage _teamStorage;
@@ -23,7 +12,7 @@ public class MapController : IMapController
     public MapController(TileMapView tilemapView) 
     {
         _tilemapView = tilemapView;
-        _tilemapView.TileMap.CompressBounds();
+        _tilemapView.CompressMap();
     }
 
     public List<Vector3> GetTeamTiles(TileBase teamTile)

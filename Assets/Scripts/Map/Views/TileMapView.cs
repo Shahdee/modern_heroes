@@ -10,6 +10,12 @@ public class TileMapView : MonoBehaviour
 
     [SerializeField] private Tilemap _tileMap;
     [SerializeField] private Grid _grid;
+    [SerializeField] private TilemapRenderer _renderer;
+    [SerializeField] private BoxCollider _collider;
 
 
+    public void CompressMap()
+    {
+        _tileMap.CompressBounds();
+    }
 }
