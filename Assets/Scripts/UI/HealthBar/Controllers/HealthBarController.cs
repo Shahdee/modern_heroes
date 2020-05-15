@@ -60,7 +60,10 @@ public class HealthBarController : IHealthBarController, IDisposable
         var healthBar = _healthBarStorage.Get(character);
         if (healthBar != null)
         {
-            healthBar.SetSlider(character.NormHealth);
+            if (character.NormHealth <= 0)
+                healthBar.Show(false);
+            else
+                healthBar.SetSlider(character.NormHealth);
         }
     }
 
