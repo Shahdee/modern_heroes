@@ -9,7 +9,7 @@ public class AIPlayer : AbstractPlayer
     private readonly IMapController _mapController;
     private static float _stepGranularity = 0.25f;
     private static float _aiResponseDelay = 0.5f;
-    private static float _aiChanceToSkip = 0.25f;
+    private static float _aiChanceToSkip = 0.1f;
 
     public AIPlayer(EPlayerType playerType, ITeamController teamController, ITeamStorage teamStorage,
             ICoroutineManager coroutineManager, IMapController mapController) : base (playerType, teamController)
