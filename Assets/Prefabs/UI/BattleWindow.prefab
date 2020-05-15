@@ -194,7 +194,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Skip phase
+  m_Text: Next phase
 --- !u!1 &1480805734756124922
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +450,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Skip Turn
-
-'
+  m_Text: Next turn
